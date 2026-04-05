@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered spam email detection system using Machine Learning and NLP to classify messages as spam or legitimate.">
+    <title>Spam Detector — AI Email Shield</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Animated Background Orbs -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header" id="header">
+            <div class="logo">
+                <div class="logo-icon">🛡️</div>
+                <div>
+                    <h1>Spam Detector</h1>
+                    <p class="tagline">AI-Powered Email Shield</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Input Section -->
+            <section class="card input-card" id="input-section">
+                <div class="card-header">
+                    <span class="card-icon">📧</span>
+                    <h2>Analyze Message</h2>
+                </div>
+                <form id="predict-form">
+                    <div class="textarea-wrapper">
+                        <textarea
+                            id="message-input"
+                            placeholder="Paste or type an email message here to check if it's spam..."
+                            rows="5"
+                            required
+                        ></textarea>
+                        <div class="textarea-glow"></div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="analyze-btn">
+                            <span class="btn-text">Analyze Message</span>
+                            <span class="btn-loader" id="btn-loader"></span>
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="clear-btn">Clear</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Result Section -->
+            <section class="card result-card hidden" id="result-section">
+                <div class="card-header">
+                    <span class="card-icon">🔍</span>
+                    <h2>Analysis Result</h2>
+                </div>
+                <div class="result-content">
+                    <div class="result-badge-wrapper">
+                        <div class="result-badge" id="result-badge">
+                            <span class="result-emoji" id="result-emoji"></span>
+                            <span class="result-label" id="result-label"></span>
+                        </div>
+                    </div>
+
+                    <div class="confidence-section">
+                        <p class="confidence-title">Confidence Score</p>
+                        <div class="confidence-bar-track">
+                            <div class="confidence-bar-fill" id="confidence-fill"></div>
+                        </div>
+                        <p class="confidence-value" id="confidence-value"></p>
+                    </div>
+
+                    <div class="probability-grid">
+                        <div class="prob-card ham-prob">
+                            <span class="prob-label">✅ Legitimate</span>
+                            <span class="prob-value" id="ham-prob-value">—</span>
+                        </div>
+                        <div class="prob-card spam-prob">
+                            <span class="prob-label">🚫 Spam</span>
+                            <span class="prob-value" id="spam-prob-value">—</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section class="card stats-card" id="stats-section">
+                <div class="card-header">
+                    <span class="card-icon">📊</span>
+                    <h2>Model Performance</h2>
+                </div>
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value" id="stat-accuracy">—</span>
+                        <span class="stat-label">Accuracy</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="stat-precision">—</span>
+                        <span class="stat-label">Precision</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="stat-recall">—</span>
+                        <span class="stat-label">Recall</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="stat-f1">—</span>
+                        <span class="stat-label">F1-Score</span>
+                    </div>
+                </div>
+                <div class="dataset-info" id="dataset-info">
+                    <div class="info-chip" id="info-total">— total</div>
+                    <div class="info-chip ham-chip" id="info-ham">— ham</div>
+                    <div class="info-chip spam-chip" id="info-spam">— spam</div>
+                </div>
+            </section>
+
+            <!-- Example Messages -->
+            <section class="card examples-card" id="examples-section">
+                <div class="card-header">
+                    <span class="card-icon">💡</span>
+                    <h2>Try These Examples</h2>
+                </div>
+                <div class="examples-grid">
+                    <button class="example-btn ham-example" data-message="Hey, are you coming to the meeting today? Let me know if you need a ride.">
+                        <span class="example-tag">Ham</span>
+                        <span class="example-text">Hey, are you coming to the meeting today?</span>
+                    </button>
+                    <button class="example-btn spam-example" data-message="Congratulations! You've won a $1000 gift card! Click here to claim your prize now!">
+                        <span class="example-tag">Spam</span>
+                        <span class="example-text">You've won a $1000 gift card! Click here!</span>
+                    </button>
+                    <button class="example-btn ham-example" data-message="Can you review the pull request I submitted yesterday? Thanks!">
+                        <span class="example-tag">Ham</span>
+                        <span class="example-text">Can you review the pull request I submitted?</span>
+                    </button>
+                    <button class="example-btn spam-example" data-message="URGENT: Your bank account has been compromised. Click this link immediately to verify your identity and secure your funds.">
+                        <span class="example-tag">Spam</span>
+                        <span class="example-text">URGENT: Your bank account has been compromised!</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with Machine Learning & NLP • Naive Bayes + TF-IDF</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
